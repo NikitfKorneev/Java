@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.progectkurs.admin">
+    <children>
+        <AnchorPane layoutY="78.0" prefHeight="522.0" prefWidth="600.0" style="-fx-background-color: #778899;">
+            <children>
+                <Button fx:id="tegSitata" layoutX="217.0" layoutY="389.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="167.0" text="Обработать" />
+            <TableView layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="239.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="Цитат" />
+                <TableColumn prefWidth="75.0" text="Автор" />
+                  <TableColumn prefWidth="75.0" text="Предмет" />
+              </columns>
+            </TableView>
+            <TextField layoutX="408.0" layoutY="24.0" promptText="Циатат" />
+            <TextField layoutX="408.0" layoutY="64.0" promptText="Автор" />
+            <TextField layoutX="408.0" layoutY="108.0" promptText="Изменение цитаты" style="-fx-background-color: #848848;" />
+            </children>
+        </AnchorPane>
+        <Text fill="#358190" layoutX="133.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вы авторизированы">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Text>
+        <Button fx:id="tegExit" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" text="Выход" />
+    </children>
+</AnchorPane>
