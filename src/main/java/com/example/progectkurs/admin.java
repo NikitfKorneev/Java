@@ -123,35 +123,35 @@ public class admin {
 
             Main.mainStage.show();//Хорошо работает
         });
-        GetQuoteFromDataBase();
+        DBUP();
 
 
         tegGoSitata.setOnAction(actionEvent -> {
             tegGoSitata.getScene().getWindow().hide();
 
             Main.mainStage.show();//Хорошо работает
-            AddInfoToDataBase();
+            TableDB();
         });
 
         tegEdit.setOnAction(actionEvent -> {
             tegEdit.getScene().getWindow().hide();
 
             Main.mainStage.show();//Хорошо работает
-            EditInfoToDataBase();
+            UpdateUsers();
         });
         tegGoEdit.setOnAction(actionEvent -> {
             tegGoEdit.getScene().getWindow().hide();
 
             Main.mainStage.show();//Хорошо работает
-            EditStateToDataBase();
+            UpdeteStates();
         });
-        Count();
+        CountStates();
         tegCount1.setOnAction(actionEvent -> {
-            CountDB();
+            CountStates1();
         });
     }
 
-    private void Count() {
+    private void CountStates() {
         tegLabID1.setVisible(true);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -159,51 +159,44 @@ public class admin {
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
 
-            ResultSet GetInfo;
-            Statement statement = connection.createStatement();
-            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+            ResultSet Info;
+            Statement Statement = connection.createStatement();
+            Info= Statement.executeQuery("Select Count(*) from states\n" +
                     "Where id_login = '" + DataLogin.ID + "'");
-            while (GetInfo.next())
-                tegLabID1.setText(GetInfo.getString(1));
-
+            while (Info.next())
+                tegLabID1.setText(Info.getString(1));
             connection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    private void CountDB() {
+    private void CountStates1() {
         tegLabID.setVisible(true);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
-
-
-            ResultSet GetInfo;
-            Statement statement = connection.createStatement();
-            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+            ResultSet Info;
+            Statement Statement = connection.createStatement();
+            Info = Statement.executeQuery("Select Count(*) from states\n" +
                     "Where id_login = '" + DataLogin.ID + "'");
-            while (GetInfo.next())
-                tegLabID.setText(GetInfo.getString(1));
-
+            while (Info.next())
+                tegLabID.setText(Info.getString(1));
             connection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
 
-    private void EditStateToDataBase() {
+    private void UpdeteStates() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
-
             Statement statement = connection.createStatement();
-
             try {
                 int count = statement.executeUpdate("update states\n" +
                         "set\n" +
@@ -213,22 +206,19 @@ public class admin {
                         "subject = '" + tegChengeSybj.getText() + "',\n" +
                         "states = '" + tegChengeState.getText() + "'\n" +
                         "where id = '" + tegIDStatets.getText() + "'");
-                System.out.println("Строк изменено " + count);
+                System.out.println("Строк изменено - " + count);
                 tegTextTable.getItems().clear();
-                GetQuoteFromDataBase();
+                DBUP();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
             connection.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-
-    private void EditInfoToDataBase() {
+    private void UpdateUsers() {
         {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -263,13 +253,11 @@ public class admin {
                             "lastname = '" + tegChenge3Name.getText() + "',\n" +
                             "login = '" + tegChengelOGIN.getText() + "'\n" +
                             "WHERE id = '" + tegidChenge.getText() + "'");
-                    System.out.println("Строк изменено " + count);
+                    System.out.println("Строк изменено - " + count);
                     tegTextTable.getItems().clear();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-
                 connection.close();
             } catch (Exception e) {
                 System.out.println(e);
@@ -278,54 +266,51 @@ public class admin {
     }
 
 
-    private void AddInfoToDataBase() {
+    private void TableDB() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
-
-
-            ResultSet GetID;
-            PreparedStatement reg = null;
+            ResultSet _id;
+            PreparedStatement register ;
             Statement statement = connection.createStatement();
             ResultSet count;
-            ResultSet id_save;
+            ResultSet Saveid;
             int PeopleID = 0;
-            int id_registr_people = 0;
+            int idRegPeople = 0;
             int check = 0;
             try {
                 count = statement.executeQuery("SELECT COUNT(*) FROM states");
                 while (count.next())
                     check = count.getInt(1);
                 if (check != 0) {
-                    id_save = statement.executeQuery("SELECT MAX(id) FROM states");
-                    while (id_save.next()) {
-                        id_registr_people = id_save.getInt(1) + 1;
+                    Saveid = statement.executeQuery("SELECT MAX(id) FROM states");
+                    while (Saveid.next()) {
+                        idRegPeople = Saveid.getInt(1) + 1;
                     }
-                } else id_registr_people = 1;
-                String savelogin = DataLogin.login;
-                GetID = statement.executeQuery("SELECT id FROM users WHERE login = '" + savelogin + "'");
-                while (GetID.next()) {
-                    PeopleID = GetID.getInt(1);
+                } else idRegPeople = 1;
+                String saveLogin = DataLogin.login;
+                _id = statement.executeQuery("SELECT id FROM users WHERE login = '" + saveLogin + "'");
+                while (_id.next()) {
+                    PeopleID = _id.getInt(1);
                 }
-
-                reg = connection.prepareStatement("INSERT INTO " + config.STATE_TABLE + "(" + config.STATE_ID + "," + config.STATE_STATES
+                register = connection.prepareStatement("INSERT INTO " + config.STATE_TABLE + "(" + config.STATE_ID + "," + config.STATE_STATES
                         + "," + config.STATE_SURNAME + "," + config.STATE_DATA + "," +
                         config.STATE_FIRST + "," + config.STATE_SECOND + "," + config.STATE_ID_LOGIN + "," +
                         config.STATE_SUBJECT + ")" + " VALUES(?,?,?,?,?,?,?,?)");
 
                 Date d = new Date();
 
-                reg.setInt(1, id_registr_people);
-                reg.setString(2, tegState.getText());
-                reg.setString(3, tegName.getText());
-                reg.setString(4, d.toString());
-                reg.setString(5, tegsecondName.getText());
-                reg.setString(6, tegLastName.getText());
-                reg.setInt(7, PeopleID);
-                reg.setString(8, tegsubject.getText());
-                reg.executeUpdate();
+                register.setInt(1, idRegPeople);
+                register.setString(2, tegState.getText());
+                register.setString(3, tegName.getText());
+                register.setString(4, d.toString());
+                register.setString(5, tegsecondName.getText());
+                register.setString(6, tegLastName.getText());
+                register.setInt(7, PeopleID);
+                register.setString(8, tegsubject.getText());
+                register.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -337,7 +322,7 @@ public class admin {
     }
 
     @FXML
-    public void SetQuoteTo() {
+    public void SetStates() {
 
         tegTextState.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("states"));
         tegTextName.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("pname"));
@@ -347,24 +332,21 @@ public class admin {
         tegTextTable.setItems(usersData);
     }
 
-
-    public void GetQuoteFromDataBase() {
+    public void DBUP() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
-
-            ResultSet GetInfo;
-            Statement statement = connection.createStatement();
-
+            ResultSet Info;
+            Statement Statement = connection.createStatement();
             try {
-                GetInfo = statement.executeQuery("SELECT * FROM states");
-                while (GetInfo.next()) {
-                    usersData.add(new admin.User1(GetInfo.getString(2), GetInfo.getString(3),
-                            GetInfo.getString(5), GetInfo.getString(8),
-                            GetInfo.getString(4)));
-                    SetQuoteTo();
+                Info = Statement.executeQuery("SELECT * FROM states");
+                while (Info.next()) {
+                    usersData.add(new admin.User1(Info.getString(2), Info.getString(3),
+                            Info.getString(5), Info.getString(8),
+                            Info.getString(4)));
+                    SetStates();
                 }
 
             } catch (SQLException e) {
@@ -385,6 +367,7 @@ public class admin {
         private String date;
 
         public User1(String states, String pname, String secondname, String subject, String date) {
+
             this.pname = pname;
             this.date = date;
             this.states = states;

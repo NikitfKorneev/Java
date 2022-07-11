@@ -13,7 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class guestList {
-    private ObservableList<User> usersData = FXCollections.observableArrayList();
+    private ObservableList<User1> usersData = FXCollections.observableArrayList();
 
     @FXML
     private ResourceBundle resources;
@@ -25,25 +25,25 @@ public class guestList {
     private Button tegBack;
 
     @FXML
-    private TableColumn<User, String> tegDate;
+    private TableColumn<User1, String> tegDate;
 
     @FXML
-    private TableColumn<User, String> tegId;
+    private TableColumn<User1, String> tegId;
 
     @FXML
-    private TableColumn<User, String> tegName;
+    private TableColumn<User1, String> tegName;
 
     @FXML
-    private TableColumn<User, String> tegSname;
+    private TableColumn<User1, String> tegSname;
 
     @FXML
-    private TableColumn<User, String> tegState;
+    private TableColumn<User1, String> tegState;
 
     @FXML
-    private TableColumn<User, String> tegSubject;
+    private TableColumn<User1, String> tegSubject;
 
     @FXML
-    private TableView<User> tegTable;
+    private TableView<User1> tegTable;
 
 
         @FXML
@@ -53,22 +53,22 @@ public class guestList {
 
           Main.mainStage.show();//Хорошо работает
             });
-            GetQuoteFromDataBase();
+            DBUP();
         }
 
-        public void SetQuoteTo(){
-            tegId.setCellValueFactory(new PropertyValueFactory<User,String>("id"));
-            tegState.setCellValueFactory(new PropertyValueFactory<User,String>("states"));
-            tegName.setCellValueFactory(new PropertyValueFactory<User,String>("pname"));
-            tegSname.setCellValueFactory(new PropertyValueFactory<User,String>("secondname"));
-            tegSubject.setCellValueFactory(new PropertyValueFactory<User,String>("subject"));
-            tegSubject.setCellValueFactory(new PropertyValueFactory<User,String>("id_login"));
-            tegDate.setCellValueFactory(new PropertyValueFactory<User,String>("date"));
+        public void SetStates(){
+            tegId.setCellValueFactory(new PropertyValueFactory<User1,String>("id"));
+            tegState.setCellValueFactory(new PropertyValueFactory<User1,String>("states"));
+            tegName.setCellValueFactory(new PropertyValueFactory<User1,String>("pname"));
+            tegSname.setCellValueFactory(new PropertyValueFactory<User1,String>("secondname"));
+            tegSubject.setCellValueFactory(new PropertyValueFactory<User1,String>("subject"));
+            tegSubject.setCellValueFactory(new PropertyValueFactory<User1,String>("id_login"));
+            tegDate.setCellValueFactory(new PropertyValueFactory<User1,String>("date"));
             tegTable.setItems(usersData);
         }
 
 
-        public void GetQuoteFromDataBase()
+        public void DBUP()
         {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -76,17 +76,17 @@ public class guestList {
                         "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                         "std_2003_kurovoipgo", "std_2003_kurovoipgo");
 
-                ResultSet GetInfo;
+                ResultSet Info;
                 Statement statement = connection.createStatement();
 
                 try{
-                    GetInfo = statement.executeQuery("SELECT * FROM states");
-                    while (GetInfo.next()){
-                        usersData.add(new User(GetInfo.getString(1),GetInfo.getString(2),
-                               GetInfo.getString(3),GetInfo.getString(4),
-                               GetInfo.getString(5), GetInfo.getString(6),
-                                GetInfo.getString(7),GetInfo.getString(8)));
-                        SetQuoteTo();
+                    Info = statement.executeQuery("SELECT * FROM states");
+                    while (Info.next()){
+                        usersData.add(new User1(Info.getString(1),Info.getString(2),
+                                Info.getString(3),Info.getString(4),
+                                Info.getString(5), Info.getString(6),
+                                Info.getString(7),Info.getString(8)));
+                        SetStates();
                     }
 
                 }
@@ -100,7 +100,7 @@ public class guestList {
             }
         }
 
-        public class User {
+        public class User1 {
 
             private String states;
             private String pname;
@@ -111,7 +111,7 @@ public class guestList {
             private String id_login;
             private String id;
 
-            public User(String id, String states, String pname, String date, String secondname, String lastname, String subject, String id_login) {
+            public User1(String id, String states, String pname, String date, String secondname, String lastname, String subject, String id_login) {
                 this.pname = pname;
                 this.date = date;
                 this.id = id;
@@ -154,7 +154,7 @@ public class guestList {
                 this.lastname = lastname;
             }
 
-            public User() {
+            public User1() {
             }
 
             public String getPname() {

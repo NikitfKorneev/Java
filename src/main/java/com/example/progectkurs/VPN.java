@@ -29,17 +29,16 @@ public class VPN {
             ResultSet checkString;//выборка максимавльного id
 
             int count_int = 0;
-            Statement statement = connection.createStatement();
-            Statement statement_count = connection.createStatement();
-            Statement test = connection.createStatement();
+            Statement Statement = connection.createStatement();
+            Statement Statement_count = connection.createStatement();
 
-            String query = "INSERT INTO " + config.USER_TABLE + "(" +
+            String States = "INSERT INTO " + config.USER_TABLE + "(" +
                     config.USER_SURNAME + "," + config.USER_FIRST_NAME
                     + "," + config.USER_SECOND_NAME + "," + config.USER_GROPE
                     + "," + config.USER_UNVIR + "," + config.USER_LOGIN_NAME + "," + config.USER_PASSWORD
                     + "," + config.USER_ROOT + ")" + " VALUES(?,?,?,?,?,?,?,?);";
             try {
-                PreparedStatement human = connection.prepareStatement(query);
+                PreparedStatement human = connection.prepareStatement(States);
                 human.setString(1, Name_);
                 human.setString(2, Name2_);
                 human.setString(3, Name3_);

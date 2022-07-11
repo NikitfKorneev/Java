@@ -107,21 +107,20 @@ public class Controller {
                         "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                         "std_2003_kurovoipgo", "std_2003_kurovoipgo");
                 Statement statement = connection.createStatement();
-                String log;
-                String pass;
+                String loging;
+                String passaword;
                 String root;
-                ResultSet reg;
+                ResultSet register;
                 try {
-                    reg = statement.executeQuery("SELECT login, password , root, id, groups FROM users");
-                    while(reg.next()) {
+                    register= statement.executeQuery("SELECT login, password , root, id, groups FROM users");
+                    while(register.next()) {
                         int i = 1;
-                        log = reg.getString(1);
-                        pass = reg.getString(2);
-                        root = reg.getString(3);
-                        DataLogin.ID = reg.getString(4);
-                        DataLogin.Groups = reg.getString(5);
-
-                        if (log.equals(login) && pass.equals(newPassword))
+                        loging = register.getString(1);
+                        passaword = register.getString(2);
+                        root = register.getString(3);
+                        DataLogin.ID = register.getString(4);
+                        DataLogin.Groups = register.getString(5);
+                        if (loging.equals(login) && passaword.equals(newPassword))
                         {
                             DataLogin saveLogin = new DataLogin(login);
                             System.out.println("Успешно");
@@ -129,14 +128,13 @@ public class Controller {
                                 ChangeScene("sitata.fxml");
                             else if (root.equals("admin"))
                                 ChangeScene("admin.fxml");
-                            else if (root.equals("ver"))
+                            else if (root.equals("verficator"))
                                 ChangeScene("vereficator.fxml");
                             break;
                         }
                         else
                             System.out.print("");
                     }
-
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
