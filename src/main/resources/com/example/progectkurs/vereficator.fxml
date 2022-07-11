@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.progectkurs.admin">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.progectkurs.verficator">
     <children>
         <AnchorPane layoutY="78.0" prefHeight="522.0" prefWidth="600.0" style="-fx-background-color: #778899;">
             <children>
@@ -44,7 +44,7 @@
                 <TextField fx:id="tegChengeSybj" layoutX="421.0" layoutY="288.0" promptText="Предмет" />
             </children>
         </AnchorPane>
-        <Text fill="#358190" layoutX="133.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вы суперпользователь">
+        <Text fill="#358190" layoutX="133.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вы Верификатор">
             <font>
                 <Font size="36.0" />
             </font>

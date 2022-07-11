@@ -15,7 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class sitata {
+public class verficator {
     private ObservableList<User1> usersData = FXCollections.observableArrayList();
     @FXML
     private ResourceBundle resources;
@@ -161,7 +161,7 @@ public class sitata {
                 }
                 String chengepassword = null;
 
-                 if  (tegIDStatets.getText().equals(config.STATE_ID)){
+                if  (tegIDStatets.getText().equals(config.STATE_ID)){
                     int count1 = statement.executeUpdate("UPDATE states\n" +
                             "SET\n" +
                             "states = '" + tegIDStatets.getText() + "',\n" +
@@ -173,7 +173,7 @@ public class sitata {
                             "WHERE id = '" + PeopleID + "'");
                 }else {
                     System.out.println("Заполните поля");
-                    }
+                }
 
 
             } catch (Exception e) {
@@ -318,103 +318,103 @@ public class sitata {
     }
 
     @FXML
-        public void SetQuoteTo(){
+    public void SetQuoteTo(){
 
-        tegTextState.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("states"));
-        tegTextName.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("pname"));
-        tegTextSName.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("secondname"));
-        tegTextSubject.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("subject"));
-        tegTextDate.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("date"));
+        tegTextState.setCellValueFactory(new PropertyValueFactory<verficator.User1,String>("states"));
+        tegTextName.setCellValueFactory(new PropertyValueFactory<verficator.User1,String>("pname"));
+        tegTextSName.setCellValueFactory(new PropertyValueFactory<verficator.User1,String>("secondname"));
+        tegTextSubject.setCellValueFactory(new PropertyValueFactory<verficator.User1,String>("subject"));
+        tegTextDate.setCellValueFactory(new PropertyValueFactory<verficator.User1,String>("date"));
         tegTextTable.setItems(usersData);
+    }
+
+
+    public void GetQuoteFromDataBase()
+    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+            ResultSet GetInfo;
+            Statement statement = connection.createStatement();
+
+            try {
+                GetInfo = statement.executeQuery("SELECT * FROM states");
+                while (GetInfo.next()) {
+                    usersData.add(new verficator.User1(GetInfo.getString(2), GetInfo.getString(3),
+                            GetInfo.getString(5), GetInfo.getString(8),
+                            GetInfo.getString(4)));
+                    SetQuoteTo();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public class User1 {
+
+        private String states;
+        private String pname;
+        private String secondname;
+        private String subject;
+        private String date;
+
+        public User1( String states, String pname, String secondname,  String subject,String date) {
+            this.pname = pname;
+            this.date = date;
+            this.states = states;
+            this.secondname = secondname;
+            this.subject = subject;
         }
 
+        public void setpname(String pname) {
+            this.pname = pname;
+        }
 
-        public void GetQuoteFromDataBase()
-            {
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection connection = DriverManager.getConnection(
-                            "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
-                            "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+        public void setsecondname(String secondname) {
+            this.secondname = secondname;
+        }
 
-                    ResultSet GetInfo;
-                    Statement statement = connection.createStatement();
+        public void setDate(String date) {
+            this.date = date;
+        }
 
-                    try {
-                        GetInfo = statement.executeQuery("SELECT * FROM states");
-                        while (GetInfo.next()) {
-                            usersData.add(new sitata.User1(GetInfo.getString(2), GetInfo.getString(3),
-                                    GetInfo.getString(5), GetInfo.getString(8),
-                                    GetInfo.getString(4)));
-                            SetQuoteTo();
-                        }
+        public void states(String states) {
+            this.states = states;
+        }
 
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    connection.close();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
 
-        public class User1 {
+        public User1() {
+        }
 
-            private String states;
-            private String pname;
-            private String secondname;
-            private String subject;
-            private String date;
+        public String getPname() {
+            return pname;
+        }
 
-            public User1( String states, String pname, String secondname,  String subject,String date) {
-                this.pname = pname;
-                this.date = date;
-                this.states = states;
-                this.secondname = secondname;
-                this.subject = subject;
-            }
+        public String getDate() {
+            return date;
+        }
 
-            public void setpname(String pname) {
-                this.pname = pname;
-            }
+        public String getStates() {
+            return states;
+        }
 
-            public void setsecondname(String secondname) {
-                this.secondname = secondname;
-            }
-
-            public void setDate(String date) {
-                this.date = date;
-            }
-
-            public void states(String states) {
-                this.states = states;
-            }
-
-            public void setSubject(String subject) {
-                this.subject = subject;
-            }
-
-            public User1() {
-            }
-
-            public String getPname() {
-                return pname;
-            }
-
-            public String getDate() {
-                return date;
-            }
-
-            public String getStates() {
-                return states;
-            }
-
-            public String getSubject(){
-                return  subject;
-            }
-            public String getSecondname(){
-                return  secondname;
-            }
+        public String getSubject(){
+            return  subject;
+        }
+        public String getSecondname(){
+            return  secondname;
+        }
 
     }
 }

@@ -25,8 +25,6 @@ public class Controller {
     @FXML
     private Button tegGo;
 
-
-
     @FXML
     private Button tegGoGuest;
 
@@ -44,10 +42,6 @@ public class Controller {
 
     @FXML
     private Button tegSitata1;
-
-
-
-
 
     @FXML
     void initialize() {
@@ -144,7 +138,7 @@ public class Controller {
                             else if (root.equals("admin"))
                                 ChangeScene("admin.fxml");
                             else if (root.equals("ver"))
-                                ChangeScene("admin.fxml");
+                                ChangeScene("vereficator.fxml");
                             break;
                         }
                         else
