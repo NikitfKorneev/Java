@@ -3,12 +3,10 @@ package com.example.progectkurs;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class singUP {
 
@@ -69,7 +67,6 @@ public class singUP {
                 StringBuilder builder = new StringBuilder();
                 for (byte password_hash : bytes) {
                     builder.append(String.format("%02X",password_hash));
-                    //last_password_hash = password_hash;
                 }
                 System.out.print(builder.toString() + "          ");
                 lim_password = builder.toString();
@@ -83,7 +80,7 @@ public class singUP {
         });
     }
 
-    private void loginUsers(String login, String password,String Name,String Name2,String Name3,String group,String univer) {
+    private void loginUsers(String Name2, String group,String univer,String login,String password,String Name,String Name3) {
         String _Name = Name;
         String _Name2 =  Name2;
         String _Name3 =  Name3;
@@ -93,6 +90,6 @@ public class singUP {
         String _univer = univer;
         String db = "users";
         int id = VPN.AIID + 1;
-            VPN.mainRegist(Name, Name2, Name3, group, univer, login, password, db, id);
-        }
+            VPN.mainRegist(Name2, group, univer,login, password,Name, Name3, db, id);
+    }
 }

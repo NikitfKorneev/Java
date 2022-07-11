@@ -46,16 +46,7 @@ public class Controller {
     @FXML
     void initialize() {
 
-//        //Тесты работы всех кнопок
-//        tegGo.setOnAction(actionEvent -> {
-//            System.out.println("Вход");
-//        });
-//        tegGoGuest.setOnAction(actionEvent -> {
-//            System.out.println("Вход Гость");
-//            });
-//        tegRegister.setOnAction(actionEvent -> {
-//            System.out.println("Регистрация");
-//        });
+
         tegRegister.setOnAction(actionEvent -> {
             tegRegister.getScene().getWindow().hide();
             FXMLLoader loader = new FXMLLoader();
@@ -102,14 +93,14 @@ public class Controller {
                 StringBuilder builder = new StringBuilder();
                 for (byte password_hash : bytes) {
                     builder.append(String.format("%02X",password_hash));
-                    //last_password_hash = password_hash;
                 }
                 System.out.print(builder.toString() + "          ");
                 newPassword = builder.toString();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-    System.out.println(newPassword);
+            System.out.println(newPassword);
+
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection connection = DriverManager.getConnection(
@@ -121,13 +112,14 @@ public class Controller {
                 String root;
                 ResultSet reg;
                 try {
-                    reg = statement.executeQuery("SELECT login,unversity,root FROM users");
-
+                    reg = statement.executeQuery("SELECT login, password , root, id, groups FROM users");
                     while(reg.next()) {
                         int i = 1;
                         log = reg.getString(1);
                         pass = reg.getString(2);
                         root = reg.getString(3);
+                        DataLogin.ID = reg.getString(4);
+                        DataLogin.Groups = reg.getString(5);
 
                         if (log.equals(login) && pass.equals(newPassword))
                         {
@@ -142,20 +134,19 @@ public class Controller {
                             break;
                         }
                         else
-                            System.out.println("Ошибка");
+                            System.out.print("");
                     }
 
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-                //ResultSet result = statement.executeQuery(query);
                 connection.close();
             } catch (Exception e) {
                 System.out.println(e);
             }
         });
     }
+
     public void ChangeScene(String str) {
         tegGoGuest.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
@@ -173,49 +164,3 @@ public class Controller {
         stage.close();
     }
 }
-//            String login = tegLogin.getText().trim();
-//            String password = tegPassword.getText().trim();
-//            if(!login.equals("") && ! password.equals("") && (!login.equals("11") || !password.equals("11"))) {
-//                loginUsers(login, password);
-//            }else {
-//                System.out.println("Заполните поля");
-//            }
-//            if(login.equals("11") && password.equals("11")) {
-//                loginUsersAdmin(login, password);
-//            }
-//        });
-//    }
-
-//    private void loginUsersAdmin(String login, String password) {
-//        tegGo.getScene().getWindow().hide();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("admin.fxml"));
-//        try {
-//            loader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Parent root = loader.getRoot();
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(root));
-//        stage.setTitle("Супер пользователь");
-//        stage.showAndWait();
-//    }
-//
-//
-//    private void loginUsers(String login, String password) {
-//        tegGo.getScene().getWindow().hide();
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("sitata.fxml"));
-//        try {
-//            loader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Parent root = loader.getRoot();
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(root));
-//        stage.setTitle("Пользователь");
-//        stage.showAndWait();
-//    }
-//}

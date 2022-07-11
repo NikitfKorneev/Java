@@ -52,58 +52,6 @@ public class VPN {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-//            try {
-//                int check = 0;
-//                int csharpluchse = 0;
-//                PreparedStatement reg = null;
-//                count = statement.executeQuery("SELECT COUNT(*) FROM users;");
-//                while (count.next())
-//                    check = count.getInt(1);
-//                if (check != 0) {
-//                    checkString = statement.executeQuery("SELECT login FROM users;");
-//                    while (checkString.next()) {
-//                        if (_login.equals(checkString.getString(1))) {
-//                            csharpluchse = 1;
-//                            break;
-//                        } else csharpluchse = 0;
-//                    }
-//                }
-
-//                if (check != 0) {
-//                    id_save = statement.executeQuery(query_2);
-//
-//                    while (id_save.next()) {
-//                        id_ = id_save.getInt(1) + 1;
-//                    }
-//                } else id_ = 1;
-//                if (csharpluchse == 0) {
-//                    reg = connection.prepareStatement(query);
-//                    //reg.setString(1, table_registr_people);
-//                    reg.setInt(1, id_);
-//                    reg.setString(2, Name_);
-//                    reg.setString(3, Name2_);
-//                    reg.setString(4, Name3_);
-//                    reg.setString(5, group_);
-//                    reg.setString(6, univer_);
-//                    reg.setString(7, login_);
-//                    reg.setString(8, password_);
-//                    reg.setString(9, root_);
-//                    reg.executeUpdate();
-//                } else if (csharpluchse == 1) {
-//                }
-
-//
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-                //ResultSet result = statement.executeQuery(query);
-//                connection.close();
-//            } catch (Exception e) {
-//                System.out.println(e);
-//            }
-//        }
-//    }
             } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }

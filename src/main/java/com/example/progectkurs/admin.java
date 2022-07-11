@@ -9,10 +9,7 @@ import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class admin {
@@ -42,7 +39,7 @@ public class admin {
     private TextField tegIDStatets;
 
     @FXML
-    private Button tegGoSitata1;
+    private Button tegGoEdit;
 
     @FXML
     private TextField tegChenge2Name;
@@ -75,6 +72,15 @@ public class admin {
     private TextField tegName;
 
     @FXML
+    private Label tegLabID;
+
+    @FXML
+    private Label tegLabID1;
+
+    @FXML
+    private Button tegCount1;
+
+    @FXML
     private TextField tegState;
 
     @FXML
@@ -97,6 +103,9 @@ public class admin {
 
     @FXML
     private TextField tegsubject;
+
+    @FXML
+    private TextField tegidChenge;
 
     @FXML
     private TextField tegLastName;
@@ -130,13 +139,60 @@ public class admin {
             Main.mainStage.show();//Хорошо работает
             EditInfoToDataBase();
         });
-
-        tegGoSitata1.setOnAction(actionEvent -> {
-            tegGoSitata1.getScene().getWindow().hide();
+        tegGoEdit.setOnAction(actionEvent -> {
+            tegGoEdit.getScene().getWindow().hide();
 
             Main.mainStage.show();//Хорошо работает
             EditStateToDataBase();
         });
+        Count();
+        tegCount1.setOnAction(actionEvent -> {
+            CountDB();
+        });
+    }
+
+    private void Count() {
+        tegLabID1.setVisible(true);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+            ResultSet GetInfo;
+            Statement statement = connection.createStatement();
+            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+                    "Where id_login = '" + DataLogin.ID + "'");
+            while (GetInfo.next())
+                tegLabID1.setText(GetInfo.getString(1));
+
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void CountDB() {
+        tegLabID.setVisible(true);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+
+            ResultSet GetInfo;
+            Statement statement = connection.createStatement();
+            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+                    "Where id_login = '" + DataLogin.ID + "'");
+            while (GetInfo.next())
+                tegLabID.setText(GetInfo.getString(1));
+
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     private void EditStateToDataBase() {
@@ -146,39 +202,24 @@ public class admin {
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
 
-            ResultSet GetID;
             Statement statement = connection.createStatement();
-            ResultSet count;
-            ResultSet id_save;
-            int PeopleID = 0;
-            int id_registr_people = 0;
-            int check = 0;
+
             try {
-                String savelogin = DataLogin.login;
-                GetID = statement.executeQuery("SELECT id FROM users WHERE login = '" + savelogin + "'");
-                while (GetID.next()) {
-                    PeopleID = GetID.getInt(1);
-                }
-                String chengepassword = null;
-
-                if  (tegIDStatets.getText().equals(config.STATE_ID)){
-                    int count1 = statement.executeUpdate("UPDATE states\n" +
-                            "SET\n" +
-                            "states = '" + tegIDStatets.getText() + "',\n" +
-                            "states = '" + tegChengeState.getText() + "',\n" +
-                            "pname = '" + tegChangeName1.getText() + "',\n" +
-                            "lastname = '" + tegChangeName2.getText() + "',\n" +
-                            "secondname = '" + tegChangeName3.getText() + "',\n" +
-                            "subject = '" + tegChengeSybj.getText() + "'\n" +
-                            "WHERE id = '" + PeopleID + "'");
-                }else {
-                    System.out.println("Заполните поля");
-                }
-
-
-            } catch (Exception e) {
+                int count = statement.executeUpdate("update states\n" +
+                        "set\n" +
+                        "pname = '" + tegChangeName1.getText() + "',\n" +
+                        "secondname = '" + tegChangeName2.getText() + "',\n" +
+                        "lastname = '" + tegChangeName3.getText() + "',\n" +
+                        "subject = '" + tegChengeSybj.getText() + "',\n" +
+                        "states = '" + tegChengeState.getText() + "'\n" +
+                        "where id = '" + tegIDStatets.getText() + "'");
+                System.out.println("Строк изменено " + count);
+                tegTextTable.getItems().clear();
+                GetQuoteFromDataBase();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
+
 
             connection.close();
         } catch (Exception e) {
@@ -188,73 +229,51 @@ public class admin {
 
 
     private void EditInfoToDataBase() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
-                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
-
-            ResultSet GetID;
-
-            Statement statement = connection.createStatement();
-            ResultSet count;
-            ResultSet id_save;
-            int PeopleID = 0;
-            int id_registr_people = 0;
-            int check = 0;
+        {
             try {
-                //count = statement.executeQuery("SELECT COUNT(*) FROM states");
-                //while (count.next())
-                //  check = count.getInt(1);
-                // if (check != 0) {
-                //  id_save = statement.executeQuery("SELECT MAX(id) FROM states");
-                // while (id_save.next()) {
-                //   id_registr_people = id_save.getInt(1) + 1;
-                // }
-                // } else id_registr_people = 1;
-                String savelogin = DataLogin.login;
-                GetID = statement.executeQuery("SELECT id FROM users WHERE login = '" + savelogin + "'");
-                while (GetID.next()) {
-                    PeopleID = GetID.getInt(1);
-                }
-                String chengepassword = null;
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                        "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+                Statement statement = connection.createStatement();
+
                 try {
-                    MessageDigest md5 = MessageDigest.getInstance("MD5");
-                    byte[] bytes = md5.digest(tegChengeUnvirsitet.getText().getBytes());
-
-                    StringBuilder sb = new StringBuilder();
-                    StringBuilder builder = new StringBuilder();
-                    for (byte password_hash : bytes) {
-                        builder.append(String.format("%02X",password_hash));
+                    String newPassword = null;
+                    try {
+                        MessageDigest md5 = MessageDigest.getInstance("MD5");
+                        byte[] bytes = md5.digest(tegChengePassword.getText().getBytes());
+                        StringBuilder sb = new StringBuilder();
+                        StringBuilder builder = new StringBuilder();
+                        for (byte password_hash : bytes) {
+                            builder.append(String.format("%02X", password_hash));
+                        }
+                        newPassword = builder.toString();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
                     }
-                    System.out.print(builder.toString() + "          ");
-                    chengepassword = builder.toString();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
 
-                if (!tegChengelOGIN.getText().equals("") && !tegChengePassword.getText().equals("") && !tegChengeGroupe.getText().equals("") && !tegChengeUnvirsitet.getText().equals("") && !tegChengeName.getText().equals("") && !tegChenge2Name.getText().equals("") && !tegChenge3Name.getText().equals("")) {
-                    int count1 = statement.executeUpdate("UPDATE users\n" +
-                            "SET\n" +
-                            "password = '" + tegChengePassword.getText() + "',\n" +
+                    int count = statement.executeUpdate("update users\n" +
+                            "set\n" +
+                            "password = '" + newPassword + "',\n" +
                             "groups = '" + tegChengeGroupe.getText() + "',\n" +
-                            "unversity = '" + chengepassword + "',\n" +
+                            "unversity = '" + tegChengeUnvirsitet.getText() + "',\n" +
                             "name = '" + tegChengeName.getText() + "',\n" +
                             "secondname = '" + tegChenge2Name.getText() + "',\n" +
                             "lastname = '" + tegChenge3Name.getText() + "',\n" +
                             "login = '" + tegChengelOGIN.getText() + "'\n" +
-                            "WHERE id = '" + PeopleID + "'");
-                }else {
-                    System.out.println("Заполните поля");
+                            "WHERE id = '" + tegidChenge.getText() + "'");
+                    System.out.println("Строк изменено " + count);
+                    tegTextTable.getItems().clear();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            connection.close();
-        } catch (Exception e) {
-            System.out.println(e);
+                connection.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
@@ -318,19 +337,18 @@ public class admin {
     }
 
     @FXML
-    public void SetQuoteTo(){
+    public void SetQuoteTo() {
 
-        tegTextState.setCellValueFactory(new PropertyValueFactory<admin.User1,String>("states"));
-        tegTextName.setCellValueFactory(new PropertyValueFactory<admin.User1,String>("pname"));
-        tegTextSName.setCellValueFactory(new PropertyValueFactory<admin.User1,String>("secondname"));
-        tegTextSubject.setCellValueFactory(new PropertyValueFactory<admin.User1,String>("subject"));
-        tegTextDate.setCellValueFactory(new PropertyValueFactory<admin.User1,String>("date"));
+        tegTextState.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("states"));
+        tegTextName.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("pname"));
+        tegTextSName.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("secondname"));
+        tegTextSubject.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("subject"));
+        tegTextDate.setCellValueFactory(new PropertyValueFactory<admin.User1, String>("date"));
         tegTextTable.setItems(usersData);
     }
 
 
-    public void GetQuoteFromDataBase()
-    {
+    public void GetQuoteFromDataBase() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
@@ -366,7 +384,7 @@ public class admin {
         private String subject;
         private String date;
 
-        public User1( String states, String pname, String secondname,  String subject,String date) {
+        public User1(String states, String pname, String secondname, String subject, String date) {
             this.pname = pname;
             this.date = date;
             this.states = states;
@@ -409,11 +427,12 @@ public class admin {
             return states;
         }
 
-        public String getSubject(){
-            return  subject;
+        public String getSubject() {
+            return subject;
         }
-        public String getSecondname(){
-            return  secondname;
+
+        public String getSecondname() {
+            return secondname;
         }
 
     }

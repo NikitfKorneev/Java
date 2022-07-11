@@ -9,10 +9,7 @@ import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class sitata {
@@ -42,7 +39,7 @@ public class sitata {
     private TextField tegIDStatets;
 
     @FXML
-    private Button tegGoSitata1;
+    private Button tegGoSitata;
 
     @FXML
     private TextField tegChenge2Name;
@@ -69,16 +66,28 @@ public class sitata {
     private Button tegExit;
 
     @FXML
-    private Button tegGoSitata;
+    private Button tegGoEdit;
 
     @FXML
     private TextField tegName;
+
+    @FXML
+    private Label tegLabID;
+
+    @FXML
+    private Label tegLabID1;
+
+    @FXML
+    private Button tegCount1;
 
     @FXML
     private TextField tegState;
 
     @FXML
     private TableColumn<User1, String> tegTextDate;
+
+    @FXML
+    private TableColumn<User1, String> tegIdSitate;
 
     @FXML
     private TableColumn<User1, String> tegTextName;
@@ -131,54 +140,33 @@ public class sitata {
             EditInfoToDataBase();
         });
 
-        tegGoSitata1.setOnAction(actionEvent -> {
-            tegGoSitata1.getScene().getWindow().hide();
+        tegGoEdit.setOnAction(actionEvent -> {
+            tegGoEdit.getScene().getWindow().hide();
 
             Main.mainStage.show();//Хорошо работает
             EditStateToDataBase();
         });
+
+        Count();
+        tegCount1.setOnAction(actionEvent -> {
+            CountDB();
+        });
     }
 
-    private void EditStateToDataBase() {
+    private void Count() {
+        tegLabID1.setVisible(true);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
                     "std_2003_kurovoipgo", "std_2003_kurovoipgo");
 
-            ResultSet GetID;
+            ResultSet GetInfo;
             Statement statement = connection.createStatement();
-            ResultSet count;
-            ResultSet id_save;
-            int PeopleID = 0;
-            int id_registr_people = 0;
-            int check = 0;
-            try {
-                String savelogin = DataLogin.login;
-                GetID = statement.executeQuery("SELECT id FROM users WHERE login = '" + savelogin + "'");
-                while (GetID.next()) {
-                    PeopleID = GetID.getInt(1);
-                }
-                String chengepassword = null;
-
-                 if  (tegIDStatets.getText().equals(config.STATE_ID)){
-                    int count1 = statement.executeUpdate("UPDATE states\n" +
-                            "SET\n" +
-                            "states = '" + tegIDStatets.getText() + "',\n" +
-                            "states = '" + tegChengeState.getText() + "',\n" +
-                            "pname = '" + tegChangeName1.getText() + "',\n" +
-                            "lastname = '" + tegChangeName2.getText() + "',\n" +
-                            "secondname = '" + tegChangeName3.getText() + "',\n" +
-                            "subject = '" + tegChengeSybj.getText() + "'\n" +
-                            "WHERE id = '" + PeopleID + "'");
-                }else {
-                    System.out.println("Заполните поля");
-                    }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+                    "Where id_login = '" + DataLogin.ID + "'");
+            while (GetInfo.next())
+                tegLabID1.setText(GetInfo.getString(1));
 
             connection.close();
         } catch (Exception e) {
@@ -186,6 +174,69 @@ public class sitata {
         }
     }
 
+    private void CountDB() {
+        tegLabID.setVisible(true);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+
+            ResultSet GetInfo;
+            Statement statement = connection.createStatement();
+            GetInfo = statement.executeQuery("Select Count(*) from states\n" +
+                    "Where id_login = '" + DataLogin.ID + "'");
+            while (GetInfo.next())
+                tegLabID.setText(GetInfo.getString(1));
+
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
+
+    private void EditStateToDataBase()    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_2003_kurovoipgo",
+                    "std_2003_kurovoipgo", "std_2003_kurovoipgo");
+
+            Statement statement = connection.createStatement();
+            ResultSet idshka;
+            String newID = "";
+            idshka = statement.executeQuery("SELECT id_login from states\n" + "Where id = '" + tegIDStatets.getText()+ "'");
+            while (idshka.next())
+            {
+                newID = idshka.getString(1);
+            }
+            if (DataLogin.ID.equals(newID)) {
+                try {
+                    int count = statement.executeUpdate("update states\n" +
+                            "set\n" +
+                            "pname = '" + tegChangeName1.getText() + "',\n" +
+                            "secondname = '" + tegChangeName2.getText() + "',\n" +
+                            "lastname = '" + tegChangeName3.getText() + "',\n" +
+                            "subject = '" + tegChengeSybj.getText() + "',\n" +
+                            "states = '" + tegChengeState.getText() + "'\n" +
+                            "where id = '" + tegIDStatets.getText() + "'");
+                    System.out.println("Строк изменено " + count);
+                    tegTextTable.getItems().clear();
+                    GetQuoteFromDataBase();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            else{System.out.println("Ошибка");}
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     private void EditInfoToDataBase() {
         try {
@@ -203,15 +254,7 @@ public class sitata {
             int id_registr_people = 0;
             int check = 0;
             try {
-                //count = statement.executeQuery("SELECT COUNT(*) FROM states");
-                //while (count.next())
-                //  check = count.getInt(1);
-                // if (check != 0) {
-                //  id_save = statement.executeQuery("SELECT MAX(id) FROM states");
-                // while (id_save.next()) {
-                //   id_registr_people = id_save.getInt(1) + 1;
-                // }
-                // } else id_registr_people = 1;
+
                 String savelogin = DataLogin.login;
                 GetID = statement.executeQuery("SELECT id FROM users WHERE login = '" + savelogin + "'");
                 while (GetID.next()) {
@@ -220,7 +263,7 @@ public class sitata {
                 String chengepassword = null;
                 try {
                     MessageDigest md5 = MessageDigest.getInstance("MD5");
-                    byte[] bytes = md5.digest(tegChengeUnvirsitet.getText().getBytes());
+                    byte[] bytes = md5.digest(tegChengePassword.getText().getBytes());
 
                     StringBuilder sb = new StringBuilder();
                     StringBuilder builder = new StringBuilder();
@@ -236,9 +279,9 @@ public class sitata {
                 if (!tegChengelOGIN.getText().equals("") && !tegChengePassword.getText().equals("") && !tegChengeGroupe.getText().equals("") && !tegChengeUnvirsitet.getText().equals("") && !tegChengeName.getText().equals("") && !tegChenge2Name.getText().equals("") && !tegChenge3Name.getText().equals("")) {
                     int count1 = statement.executeUpdate("UPDATE users\n" +
                             "SET\n" +
-                            "password = '" + tegChengePassword.getText() + "',\n" +
+                            "password = '" + chengepassword + "',\n" +
                             "groups = '" + tegChengeGroupe.getText() + "',\n" +
-                            "unversity = '" + chengepassword + "',\n" +
+                            "unversity = '" + tegChengeUnvirsitet.getText() + "',\n" +
                             "name = '" + tegChengeName.getText() + "',\n" +
                             "secondname = '" + tegChenge2Name.getText() + "',\n" +
                             "lastname = '" + tegChenge3Name.getText() + "',\n" +
@@ -319,7 +362,7 @@ public class sitata {
 
     @FXML
         public void SetQuoteTo(){
-
+        tegIdSitate.setCellValueFactory(new PropertyValueFactory<sitata.User1, String>("id"));
         tegTextState.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("states"));
         tegTextName.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("pname"));
         tegTextSName.setCellValueFactory(new PropertyValueFactory<sitata.User1,String>("secondname"));
@@ -341,9 +384,11 @@ public class sitata {
                     Statement statement = connection.createStatement();
 
                     try {
-                        GetInfo = statement.executeQuery("SELECT * FROM states");
+                        GetInfo = statement.executeQuery("Select *\n" +
+                                "from states, users\n" +
+                                "where states.id_login = users.id AND users.groups ='" + DataLogin.Groups + "'");
                         while (GetInfo.next()) {
-                            usersData.add(new sitata.User1(GetInfo.getString(2), GetInfo.getString(3),
+                            usersData.add(new sitata.User1(GetInfo.getString(1), GetInfo.getString(2), GetInfo.getString(3),
                                     GetInfo.getString(5), GetInfo.getString(8),
                                     GetInfo.getString(4)));
                             SetQuoteTo();
@@ -359,37 +404,36 @@ public class sitata {
             }
 
         public class User1 {
-
+            private String id;
             private String states;
             private String pname;
             private String secondname;
             private String subject;
             private String date;
 
-            public User1( String states, String pname, String secondname,  String subject,String date) {
+            public User1(String id, String states, String pname, String secondname,  String subject,String date) {
+                this.id = id;
                 this.pname = pname;
                 this.date = date;
                 this.states = states;
                 this.secondname = secondname;
                 this.subject = subject;
             }
-
+            public void setId(String id) {
+                this.id = id;
+            }
             public void setpname(String pname) {
                 this.pname = pname;
             }
-
             public void setsecondname(String secondname) {
                 this.secondname = secondname;
             }
-
             public void setDate(String date) {
                 this.date = date;
             }
-
             public void states(String states) {
                 this.states = states;
             }
-
             public void setSubject(String subject) {
                 this.subject = subject;
             }
@@ -400,21 +444,20 @@ public class sitata {
             public String getPname() {
                 return pname;
             }
-
             public String getDate() {
                 return date;
             }
-
             public String getStates() {
                 return states;
             }
-
             public String getSubject(){
                 return  subject;
             }
             public String getSecondname(){
                 return  secondname;
             }
-
+            public String getId() {
+                return id;
+        }
     }
 }

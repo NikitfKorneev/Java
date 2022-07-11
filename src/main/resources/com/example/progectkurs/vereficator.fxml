@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,35 +14,40 @@
         <AnchorPane layoutY="78.0" prefHeight="522.0" prefWidth="600.0" style="-fx-background-color: #778899;">
             <children>
                 <TextField fx:id="tegLastName" layoutX="421.0" layoutY="107.0" promptText="Отчество" />
-                <Button fx:id="tegGoSitata" layoutX="421.0" layoutY="217.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="149.0" text="Обработать" />
-                <TableView fx:id="tegTextTable" layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="377.0">
+                <Button fx:id="tegGoSitata" layoutX="421.0" layoutY="209.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="149.0" text="Обработать" />
+                <TableView fx:id="tegTextTable" layoutX="14.0" layoutY="14.0" prefHeight="126.0" prefWidth="375.0">
                     <columns>
-                        <TableColumn fx:id="tegTextState" prefWidth="75.0" text="States" />
-                        <TableColumn fx:id="tegTextName" prefWidth="75.0" text="Name" />
-                        <TableColumn fx:id="tegTextSName" prefWidth="75.0" text="SName" />
+                        <TableColumn fx:id="tegTextState" minWidth="9.0" prefWidth="71.0" text="States" />
+                        <TableColumn fx:id="tegTextName" minWidth="0.0" prefWidth="63.0" text="Name" />
+                        <TableColumn fx:id="tegTextSName" prefWidth="91.0" text="SName" />
                         <TableColumn fx:id="tegTextSubject" prefWidth="75.0" text="Subject" />
                         <TableColumn fx:id="tegTextDate" prefWidth="75.0" text="Date" />
+                  <TableColumn fx:id="tegidSitate" prefWidth="75.0" text="ID" />
                     </columns>
                 </TableView>
                 <TextField fx:id="tegName" layoutX="421.0" layoutY="34.0" promptText="Имя" />
                 <TextField fx:id="tegsecondName" layoutX="421.0" layoutY="70.0" promptText="Фамилия" />
                 <TextField fx:id="tegState" layoutX="421.0" layoutY="176.0" promptText="Циатат" />
                 <TextField fx:id="tegsubject" layoutX="421.0" layoutY="143.0" promptText="Предмет" />
-                <Button fx:id="tegEdit" layoutX="175.0" layoutY="409.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Редактировать данные" />
+                <Button fx:id="tegEdit" layoutX="14.0" layoutY="201.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Редактировать данные" />
                 <TextField fx:id="tegChengeName" layoutX="14.0" layoutY="443.0" promptText="Изменение Имя" />
                 <TextField fx:id="tegChenge2Name" layoutX="14.0" layoutY="477.0" promptText="Изменение Фамилии" />
-                <TextField fx:id="tegChenge3Name" layoutX="175.0" layoutY="333.0" promptText="Изменение Отчества" />
-                <TextField fx:id="tegChengelOGIN" layoutX="175.0" layoutY="370.0" promptText="Изменение Логина" />
+                <TextField fx:id="tegChenge3Name" layoutX="14.0" layoutY="267.0" promptText="Изменение Отчества" />
+                <TextField fx:id="tegChengelOGIN" layoutX="14.0" layoutY="301.0" promptText="Изменение Логина" />
                 <TextField fx:id="tegChengePassword" layoutX="14.0" layoutY="333.0" promptText="Изменение Пароля" />
                 <TextField fx:id="tegChengeGroupe" layoutX="14.0" layoutY="370.0" promptText="Изменение Группы" />
                 <TextField fx:id="tegChengeUnvirsitet" layoutX="14.0" layoutY="409.0" promptText="Изменение Университета" />
-                <Button fx:id="tegGoSitata1" layoutX="263.0" layoutY="465.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Изменить" />
-                <TextField fx:id="tegIDStatets" layoutX="421.0" layoutY="465.0" promptText="Номер цитаты" />
-                <TextField fx:id="tegChengeState" layoutX="421.0" layoutY="431.0" promptText="Цитата" />
-                <TextField fx:id="tegChangeName1" layoutX="421.0" layoutY="321.0" promptText="Имя" />
-                <TextField fx:id="tegChangeName2" layoutX="421.0" layoutY="358.0" promptText="Фамилия" />
-                <TextField fx:id="tegChangeName3" layoutX="421.0" layoutY="397.0" promptText="Отчество" />
-                <TextField fx:id="tegChengeSybj" layoutX="421.0" layoutY="288.0" promptText="Предмет" />
+                <Button fx:id="tegGoEdit" layoutX="421.0" layoutY="477.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Изменить" />
+                <TextField fx:id="tegIDStatets" layoutX="421.0" layoutY="443.0" promptText="Номер цитаты" />
+                <TextField fx:id="tegChengeState" layoutX="421.0" layoutY="409.0" promptText="Цитата" />
+                <TextField fx:id="tegChangeName1" layoutX="421.0" layoutY="301.0" promptText="Имя" />
+                <TextField fx:id="tegChangeName2" layoutX="421.0" layoutY="333.0" promptText="Фамилия" />
+                <TextField fx:id="tegChangeName3" layoutX="421.0" layoutY="370.0" promptText="Отчество" />
+                <TextField fx:id="tegChengeSybj" layoutX="421.0" layoutY="261.0" promptText="Предмет" />
+                <Text fill="WHITE" layoutX="21.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество ваших цитат" />
+                <Label fx:id="tegLabID" layoutX="21.0" layoutY="168.0" prefHeight="17.0" prefWidth="34.0" style="-fx-background-color: #fafafa;" visible="false" />
+                <Button fx:id="tegCount1" layoutX="167.0" layoutY="143.0" mnemonicParsing="false" text="Кол-в ваших записей" />
+                <TextField fx:id="tegidChenge" layoutX="14.0" layoutY="236.0" promptText="Id" />
             </children>
         </AnchorPane>
         <Text fill="#358190" layoutX="133.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Вы Верификатор">
@@ -50,5 +56,6 @@
             </font>
         </Text>
         <Button fx:id="tegExit" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" text="Выход" />
+        <Label fx:id="tegLabID1" layoutX="552.0" layoutY="6.0" prefHeight="17.0" prefWidth="34.0" style="-fx-background-color: #fafafa;" />
     </children>
 </AnchorPane>
